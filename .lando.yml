@@ -1,0 +1,51 @@
+name: drupal-admin-ui
+recipe: drupal8
+config:
+  php: 7.2
+  via: nginx
+  # via: apache
+  webroot: ./demo/docroot
+  database: mariadb
+  xdebug: true
+
+services:
+  appserver:
+    build:
+      - cd /app/demo && /bin/sh /app/demo/lando-setup.sh
+    overrides:
+      environment:
+        DRUSH_OPTIONS_URI: 'http://drupal-admin-ui.lndo.site'
+        SIMPLETEST_BASE_URL: 'http://drupal-admin-ui.lndo.site'
+        PHP_IDE_CONFIG: 'serverName=http://drupal-admin-ui.lndo.site'
+        SYMFONY_DEPRECATIONS_HELPER: 'disabled'
+  database:
+    type: mysql
+    creds:
+      user: drupal
+      password: drupal
+      database: drupal
+  node:
+    type: node
+    globals:
+      yarn: "1.15.0"
+    port: 3000
+    overrides:
+      environment:
+        REACT_APP_DRUPAL_BASE_URL: 'http://drupal-admin-ui.lndo.site'
+
+tooling:
+  drush:
+    service: appserver
+    cmd: drush --root=/app/docroot
+  admin-ui-drupal-rebuild:
+    service: appserver
+    cmd: /bin/sh /app/demo/lando-setup.sh
+  admin-ui-start:
+    service: node
+    description: run the admin ui
+    cmd:
+      - yarn install
+      - yarn workspace @drupal/admin-ui start
+  yarn:
+    service: node
+    description: run yarn commands
