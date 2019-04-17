@@ -22,52 +22,43 @@ This is an admin UI for Drupal, built with JavaScript and based on [create-react
 - Yarn >= 1.15
 - [Docker](https://docs.docker.com/engine/installation/) and [Docker Compose](https://docs.docker.com/compose/install/),
   or you can setup Drupal manually. See the `Makefile` for guidance.
+- [Lando](https://docs.devwithlando.io/installation/system-requirements.html)  
 
 ## Installation
 
 ### Drupal
 
-Ensure that you currently have nothing running on port 80 (e.g. a local webserver) or port 3000 (e.g. a local node process). You can run ` lsof -i :80 -S` to see what you currently have running.
+Ensure that you currently have nothing running on port 3000 (e.g. a local node process). You can run ` lsof -i :80 -S` to see what you currently have running.
 
 ```
 git clone git@github.com:jsdrupal/drupal-admin-ui.git
 cd drupal-admin-ui
-make build
-docker-compose up
-(open a new terminal)
-make install
+lando start
 ```
+
+You can see now all the urls generated, which are the URL that the node container sees Drupal on internally. 
 
 If this fails and you see `Killed` from composer, you will need to [increase your memory allocation](https://docs.docker.com/docker-for-mac/#advanced) for Docker.
 
-You can run your Drupal commands inside the container (e.g. `docker exec -it drupal_admin_ui_drupal drush status`).
-Instead of first entering the container to run commands (with `make drupal:cli`), you can create an alias to run
-commands directly in the containers, e.g.
-```
-alias admin_ui_drupal='function _admin_ui_drupal() { docker exec -it drupal_admin_ui_drupal $@ };_admin_ui_drupal'
-admin_ui_drupal drush status
-```
-
-**The `Makefile` contains several useful commands!** e.g. enabling XDebug.
+You can run your Drupal commands inside the container (e.g. `lando drush status`). you can runn `lando` to see all the available commands.
 
 Open the one time login link in your browser to log into Drupal. You will then have the following available:
 
 | URL | Description |
 |---|---|
-| http://127.0.0.1 | Regular Drupal installation / JSON API endpoints |
-| http://127.0.0.1/admin/content | A page taken over by the new admin UI. This uses the bundled version from `packages/admin-ui/build`, run `yarn workspace admin-ui build` in the node container to re-build |
+| http://drupal-admin-ui.lndo.site  | Regular Drupal installation / JSON API endpoints |
+| http://drupal-admin-ui.lndo.site/admin/content | A page taken over by the new admin UI. This uses the bundled version from `packages/admin-ui/build`, run `yarn workspace admin-ui build` in the node container to re-build |
 
 ### Admin UI
 
-`yarn workspace @drupal/admin-ui start` will start the Webpack dev sever that comes with [Create React App](https://facebook.github.io/create-react-app).
+`lando admin-ui-start` will start the Webpack dev sever that comes with [Create React App](https://facebook.github.io/create-react-app).
 
 #### Nightwatch
-- If you don't know the password for admin, change it with `docker exec -it drupal_admin_ui_drupal drush user:password admin admin`
-- Run `docker exec -it -e REACT_APP_DRUPAL_BASE_URL=http://drupal drupal_admin_ui_node yarn workspace admin-ui build`, which
-creates a build that uses `http://drupal` as it's base URL, which is the URL that the node container sees Drupal on internally.
-- Run `docker exec -it -e REACT_APP_DRUPAL_BASE_URL=http://drupal -e NIGHTWATCH_LOGIN_admin_PASSWORD=admin drupal_admin_ui_node yarn workspace admin-ui nightwatch`
-or `docker exec -it -e REACT_APP_DRUPAL_BASE_URL=http://drupal -e NIGHTWATCH_LOGIN_admin_PASSWORD=admin drupal_admin_ui_node yarn test` to run all tests
-- When you're finished, restore the regular build if you want to browse the compiled version in your browser with `docker exec -it drupal_admin_ui_node yarn workspace admin-ui build`.
+- If you don't know the password for admin, change it with `lando drush user:password admin admin`
+- Run `lando yarn workspace admin-ui build`
+- Run `lando -e NIGHTWATCH_LOGIN_admin_PASSWORD=admin drupal_admin_ui_node yarn workspace admin-ui nightwatch`
+or `lando -e NIGHTWATCH_LOGIN_admin_PASSWORD=admin drupal_admin_ui_node yarn test` to run all tests
+- When you're finished, restore the regular build if you want to browse the compiled version in your browser with `lando yarn workspace admin-ui build`.
 This will also be restored when you restart your containers.
 
 #### React AXE
