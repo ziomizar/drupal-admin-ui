@@ -51,7 +51,7 @@ Open the one time login link in your browser to log into Drupal. You will then h
 
 ### Admin UI
 
-`yarn workspace @drupal/admin-ui start` will start the Webpack dev sever that comes with [Create React App](https://facebook.github.io/create-react-app).
+`lando admin-ui-start` will start the Webpack dev sever that comes with [Create React App](https://facebook.github.io/create-react-app).
 
 #### Nightwatch
 - If you don't know the password for admin, change it with `lando drush user:password admin admin`
