@@ -36,11 +36,12 @@ if [ ! -f  /app/demo/docroot/sites/default/settings.php ]; then
     composer config repositories.repo-name path "/app/admin_ui_support"
     COMPOSER_MEMORY_LIMIT=-1 composer require justafish/drupal-admin-ui-support:dev-master
     cd /app/demo/docroot
-    drush site:install demo_umami -y --db-url=mysql://drupal:drupal@database.drupaladminui.internal:3306/drupal --sites-subdir=default
+    drush site:install demo_umami -y --db-url=mysql://drupal:drupal@database.drupaladminui.internal:3306/drupal --sites-subdir=default  --account-name=admin --account-pass=admin
     drush en -y jsonapi admin_ui_support admin_ui_widget_example
     drush config:set -y system.logging error_level verbose
     rm -rf /app/demo/docroot/vfancy
     ln -s /var/www/admin-ui/build/ /app/demo/docroot/vfancy
+    # reset the admin password to be
 fi
 
 echo "##############################################################################################
