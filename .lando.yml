@@ -34,9 +34,6 @@ services:
         REACT_APP_DRUPAL_BASE_URL: 'http://drupal-admin-ui.lndo.site'
 
 tooling:
-  drush:
-    service: appserver
-    cmd: drush --root=/app/docroot
   admin-ui-drupal-rebuild:
     service: appserver
     cmd: /bin/sh /app/demo/lando-setup.sh
