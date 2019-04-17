@@ -32,6 +32,8 @@ services:
     overrides:
       environment:
         REACT_APP_DRUPAL_BASE_URL: 'http://drupal-admin-ui.lndo.site'
+    build:
+      - yarn install
 
 tooling:
   admin-ui-drupal-rebuild:
@@ -46,3 +48,7 @@ tooling:
   yarn:
     service: node
     description: run yarn commands
+  npm:
+    service: node
+  node:
+    service: node
