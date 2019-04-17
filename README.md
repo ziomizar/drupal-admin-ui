@@ -46,8 +46,8 @@ Open the one time login link in your browser to log into Drupal. You will then h
 
 | URL | Description |
 |---|---|
-| http://127.0.0.1 | Regular Drupal installation / JSON API endpoints |
-| http://127.0.0.1/admin/content | A page taken over by the new admin UI. This uses the bundled version from `packages/admin-ui/build`, run `yarn workspace admin-ui build` in the node container to re-build |
+| http://drupal-admin-ui.lndo.site  | Regular Drupal installation / JSON API endpoints |
+| http://drupal-admin-ui.lndo.site/admin/content | A page taken over by the new admin UI. This uses the bundled version from `packages/admin-ui/build`, run `yarn workspace admin-ui build` in the node container to re-build |
 
 ### Admin UI
 
