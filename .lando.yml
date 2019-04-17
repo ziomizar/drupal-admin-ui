@@ -10,8 +10,6 @@ config:
 
 services:
   appserver:
-    build:
-      - cd /app/demo && /bin/sh /app/demo/lando-setup.sh
     overrides:
       environment:
         DRUSH_OPTIONS_URI: 'http://drupal-admin-ui.lndo.site'
@@ -19,7 +17,7 @@ services:
         PHP_IDE_CONFIG: 'serverName=http://drupal-admin-ui.lndo.site'
         SYMFONY_DEPRECATIONS_HELPER: 'disabled'
   database:
-    type: mysql
+    type: mariadb
     creds:
       user: drupal
       password: drupal
@@ -35,10 +33,13 @@ services:
     build:
       - yarn install
 
+events:
+  post-start:
+    # lando-setup run only if settings.php is not created on sites/default
+    # at this point all the services are running.
+    - cd /app/demo && /bin/sh /app/demo/lando-setup.sh
+
 tooling:
-  admin-ui-drupal-rebuild:
-    service: appserver
-    cmd: /bin/sh /app/demo/lando-setup.sh
   admin-ui-start:
     service: node
     description: run the admin ui
