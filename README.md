@@ -31,7 +31,7 @@ This is an admin UI for Drupal, built with JavaScript and based on [create-react
 Ensure that you currently have nothing running on port 3000 (e.g. a local node process). You can run ` lsof -i :80 -S` to see what you currently have running.
 
 ```
-git clone git@github.com:jsdrupal/drupal-admin-ui.git
+git clone git@github.com:ziomizar/drupal-admin-ui.git
 cd drupal-admin-ui
 lando start
 ```
